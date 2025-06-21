@@ -64,7 +64,7 @@ def read_user(id_user):
     if user:
         return jsonify({ "username": user.username }), 200
     
-    return jsonify({"message": "Usuário não encontrado"}), 404
+    return user_not_found()
 
 @app.route("/user/<int:id_user>", methods=["PUT"])
 @login_required
@@ -78,7 +78,7 @@ def update_user(id_user):
         db.session.commit()
         return jsonify({"message": f"Usuário {user.username} atualizado com sucesso"}), 200
 
-    return jsonify({"message": "Usuário não encontrado"}), 404
+    return user_not_found()
 
 @app.route("/user/<int:id_user>", methods=["DELETE"])
 @login_required
@@ -93,11 +93,15 @@ def delete_user(id_user):
         db.session.commit()
         return jsonify({"message": f"Usuário {user.username} apagado com sucesso"}), 200
 
-    return jsonify({"message": "Usuário não encontrado"}), 404
+    return user_not_found()
 
 @app.route("/hello-world", methods=["GET"])
 def hello_world():
     return "Hello World"
+
+def user_not_found():
+    return jsonify({"message": "Usuário não encontrado"}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
