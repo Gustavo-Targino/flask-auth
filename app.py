@@ -83,6 +83,9 @@ def update_user(id_user):
 @app.route("/user/<int:id_user>", methods=["DELETE"])
 @login_required
 def delete_user(id_user):
+    if id_user == current_user.id:
+        return jsonify({"message": "Exclusão não permitida"}), 403
+
     user = User.query.get(id_user)
 
     if user:
